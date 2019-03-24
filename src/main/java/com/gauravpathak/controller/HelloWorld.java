@@ -13,5 +13,6 @@ public class HelloWorld {
     @GetMapping("/hello-world/{message}")
     public HelloWorldBean helloWorldBean(@PathVariable("message") String message) {
         return new HelloWorldBean("Hello " + message);
+        //throw new RuntimeException("Something went wrong!!");
     }
 }
