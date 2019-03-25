@@ -34,13 +34,23 @@ public class TodoController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/users/{username}/todos/{id}")
+    @GetMapping(path = "/users/{username}/todos/{id}")
     public ResponseEntity findById(@PathVariable("username") String username, @PathVariable("id") Long id) {
         if (repository.findById(id).orElse(null) == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
             Optional<Todo> todo = repository.findById(id);
             return new ResponseEntity(todo, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path = "/users/{username}/todos/{id}")
+    public ResponseEntity update(@PathVariable("username") String username, @PathVariable("id") Long id, @RequestBody Todo todo) {
+        if (repository.findById(id).orElse(null) == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } else {
+            Todo updated = repository.save(todo);
+            return new ResponseEntity(updated, HttpStatus.OK);
         }
     }
 }
