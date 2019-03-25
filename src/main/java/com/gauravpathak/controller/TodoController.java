@@ -5,7 +5,9 @@ import com.gauravpathak.repository.TodoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +54,12 @@ public class TodoController {
             Todo updated = repository.save(todo);
             return new ResponseEntity(updated, HttpStatus.OK);
         }
+    }
+
+    @PostMapping(path = "/users/{username}/todos/")
+    public ResponseEntity save(@PathVariable("username") String username, @RequestBody Todo todo) {
+        Todo save = repository.save(todo);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(save.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
